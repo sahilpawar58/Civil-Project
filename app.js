@@ -63,6 +63,7 @@ app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 
 app.post("/admin/delete/user", isAdmin, deleteUser, (req, res) =>
   res.send("delete user")
+  
 );
 app.get("/admin/search/user", isAdmin, searchuser, (req, res) =>
   res.render("searchedUser")
