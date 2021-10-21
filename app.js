@@ -42,7 +42,7 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -54,7 +54,8 @@ mongoose
 
 // routes
 app.get("*", checkUser);
-app.get("/", (req, res) => res.render("additional-user-info"));
+app.get("/", (req, res) => res.render("home"));
+app.get("/add", (req, res) => res.render("additional-user-info"));
 app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 
 app.post("/admin/delete/user", isAdmin, deleteUser, (req, res) =>
