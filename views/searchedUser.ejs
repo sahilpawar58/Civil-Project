@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/header'); -%>
+  <body>
+    <form action="/admin/search/user">
+      <label for="gsearch">Search Email</label>
+      <input type="search" id="email" name="email">
+      <input type="submit">
+    </form>
+    <script>
+    function deleteUser(email){
+     try {
+       const res = fetch("/admin/delete/user", {
+         method: "POST",
+         body: JSON.stringify({ email }),
+         headers: { "Content-Type": "application/json" },
+       });
+       alert(email+" user deleted successfully")
+       window.location="/admin"
+     
+     } catch (err) {
+       console.log(err);
+     }
+ }
+     </script>
+    <table style="width: 100%">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Delete</th>
+      </tr>
+      <% for (var i =0; i <=searcheduser.length-1; i++ ) { %>
+      <tr>
+        <td><%= searcheduser[i]['firstname'] %></td>
+        <td><%= searcheduser[i]['email'] %></td>
+        <td><%=searcheduser[i]['role'] %></td>
+        <td>     
+          <div class="container">
+            <div class="vertical-center">
+              
+                <button
+                  type="submit"
+                  id="post-btn"
+                  onclick="deleteUser('<%= searcheduser[i][`email`] %>')"
+                  value="<%= searcheduser[i]['email'] %>"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% } %>
+    </table>
+  </body>
+  <%- include('partials/footer'); -%>
+</html>

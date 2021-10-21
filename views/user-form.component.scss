@@ -1,0 +1,30 @@
+input[type=text] {
+    border: 2px solid red;
+    border-radius: 4px;
+  }
+
+  input[type=text]:focus{
+    outline: 2px solid white;     /* oranges! yey */
+  }
+
+  textarea[type=text]:focus{
+    outline: 2px solid white;     /* oranges! yey */
+  }
+
+  textarea{
+    border: 2px solid red;
+    border-radius: 4px;
+  }
+
+  select{
+    border: 2px solid red;
+    border-radius: 4px;
+  }
+
+  h4 {
+    color: red;
+  }
+
+  label{
+
+  }

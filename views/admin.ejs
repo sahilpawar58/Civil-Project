@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/header'); -%>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+    .container {
+      height: 80px;
+      position: relative;
+    }
+
+    .vertical-center {
+      margin: 0;
+      position: absolute;
+      top: 30%;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+    form {width: auto;
+        position: relative;
+    height: auto; }
+  </style>
+  <body>
+    <form action="/admin/search/user">
+      <label for="gsearch">Search User</label>
+      <input type="search" id="email" name="email">
+      <input type="submit">
+    </form>
+    <script>
+    function deleteUser(email){
+     try {
+       const res = fetch("/admin/delete/user", {
+         method: "POST",
+         body: JSON.stringify({ email }),
+         headers: { "Content-Type": "application/json" },
+       });
+       alert(email+" user deleted successfully")
+       window.location="/admin"
+     
+     } catch (err) {
+       console.log(err);
+     }
+ }
+     </script>
+    <table style="width: 100%">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Delete</th>
+      </tr>
+      <% for (var i =0; i <=alluser.length-1; i++ ) { %>
+      <tr>
+        <td><%= alluser[i]['firstname'] %></td>
+        <td><%= alluser[i]['email'] %></td>
+        <td><%= alluser[i]['role'] %></td>
+        <td>     
+          <div class="container">
+            <div class="vertical-center">
+              
+                <button
+                  type="submit"
+                  id="post-btn"
+                  onclick="deleteUser('<%= alluser[i][`email`] %>')"
+                  value="<%= alluser[i]['email'] %>"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% } %>
+    </table>
+    
+    
+  </body>
+  <%- include('partials/footer'); -%>
+</html>

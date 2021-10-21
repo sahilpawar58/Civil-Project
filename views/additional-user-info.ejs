@@ -1,0 +1,108 @@
+<%- include('partials/header'); -%>
+
+<div>
+  <div class="card-header">
+    <h4 class="additional-text-center">
+      Enter your details to complete your profile
+    </h4>
+  </div>
+
+  <div class="card-body">
+    <form class="row g-3 p-3">
+      <div class="row">
+        <div class="col">
+          <label for="fullname" class="form-label">Full name</label>
+          <input
+            type="text"
+            class="additional-form-control"
+            id="fullname"
+            value="Vaibhav Gawad"
+            required
+          />
+          <div class="valid-tooltip">Looks good!</div>
+        </div>
+        <div class="col">
+          <label for="emailid" class="form-label">Enter email</label>
+          <input
+            type="text"
+            class="additional-form-control"
+            id="emailid"
+            value="gawadvaibhavv@gmail.com"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <label for="inputAddress" class="form-label">Address</label>
+          <textarea
+            class="additional-form-control"
+            id="address1"
+            rows="2"
+          ></textarea>
+        </div>
+        <div class="col-md-4 pt-4 position-relative">
+          <label for="city1" class="form-label">City</label>
+          <input
+            type="text"
+            class="additional-form-control"
+            id="city1"
+            required
+          />
+        </div>
+
+        <div class="invalid-tooltip">Please provide a valid city.</div>
+        <div class="col-md-4 pt-4">
+          <label for="descriptionofhouse" class="form-label"
+            >Description of House</label
+          >
+          <textarea
+            class="additional-textarea-form-control"
+            id="descriptionofhouse"
+            rows="1"
+          ></textarea>
+        </div>
+
+        <div class="col pt-4">
+          <label for="propertytype" class="form-label"
+            >Select Your Property Type</label
+          ><br />
+          <select
+            class="additional-form-select"
+            aria-label="Default select example"
+          >
+            <option selected>Select Your Property Type</option>
+            <option value="2">Residencial</option>
+            <option value="1">Commercial</option>
+            <option value="3">Sigle Home</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="adhar1" class="form-label"> Enter Your Adhar Card</label>
+          <input
+            type="text"
+            class="additional-form-control"
+            id="adhar1"
+            required
+          />
+          <div class="valid-tooltip">Looks good!</div>
+        </div>
+        <div class="col">
+          <label for="pan1" class="form-label">Enter Your Pan Card</label>
+          <input type="text" class="additional-form-control" id="pan1" />
+        </div>
+      </div>
+
+      <div class="col-md-12 m-3">
+        <button class="btn btn-outline-primary" type="submit">
+          Submit form
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer'); -%>
