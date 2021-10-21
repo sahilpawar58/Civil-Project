@@ -25,18 +25,21 @@ router.post("/login", loginAccountLimiter, authController.login_post);
 router.get("/logout", authController.logout_get);
 
 //vendor-routes
-router.get("/vendor-login", authController.vendorlogin_get);
+/*router.get("/vendor-login", authController.vendorlogin_get);
 router.post(
   "/vendor-login",
   loginAccountLimiter,
   authController.vendorlogin_post
 );
+//vendor login combined with userlogin
 router.get("/vendor-signup", authController.vendorsignup_get);
+*/
 router.post(
   "/vendor-signup",
   createAccountLimiter,
   authController.vendorsignup_post
 );
+
 router.get("/admin/signup", (req, res) => {
   res.render("adminsignup");
 });

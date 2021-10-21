@@ -115,9 +115,10 @@ module.exports.logout_get = (req, res) => {
   res.redirect("/");
 };
 
-module.exports.vendorlogin_get = (req, res) => {
-  res.render("vendorlogin");
-};
+//vendor login removed
+// module.exports.vendorlogin_get = (req, res) => {
+//   res.render("vendorlogin");
+// };
 module.exports.vendorsignup_get = (req, res) => {
   res.render("vendorsignup");
 };
