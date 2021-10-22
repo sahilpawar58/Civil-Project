@@ -27,6 +27,34 @@ const userSchema = mongoose.Schema({
     required: [true, "Password is required"],
     minlength: [6, "MinLength is 6"],
   },
+  additionalinfo: {
+    fullname: {
+      type: String,
+      lowercase: true,
+    },
+    address: {
+      type: String,
+      lowercase: true,
+    },
+    city: {
+      type: String,
+      lowercase: true,
+    },
+    district: {
+      type: String,
+      lowercase: true,
+    },
+    propertytype: {
+      type: String,
+      lowercase: true,
+    },
+    adharcard: {
+      type: Number,
+    },
+    pancard: {
+      type: String,
+    },
+  },
 });
 // fire a function before doc saved to db
 userSchema.pre("save", async function (next) {

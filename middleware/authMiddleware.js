@@ -32,6 +32,17 @@ const checkUser = (req, res, next) => {
         console.log(decodedtoken);
         let user = await User.findById(decodedtoken.id);
         res.locals.user = user;
+        if (
+          (user.additionalinfo.fullname == "") |
+          (user.additionalinfo.address == "") |
+          (user.additionalinfo.city == "") |
+          (user.additionalinfo.district == "") |
+          (user.additionalinfo.propertytype == "") |
+          (user.additionalinfo.adharcard == "") |
+          (user.additionalinfo.pancard == "")
+        ) {
+          return res.render("additional-user-info");
+        }
         next();
       }
     });
@@ -89,6 +100,13 @@ const searchuser = async (req, res, next) => {
   res.locals.searcheduser = user;
   next();
 };
+function invaidCsrfToken(error, req, res, next) {
+  if (error.code !== "EBADCSRFTOKEN") return next(error);
+
+  // handle CSRF token errors here
+  res.status(403);
+  res.send("form tampered with");
+}
 module.exports = {
   requireAuth,
   checkUser,
@@ -96,4 +114,5 @@ module.exports = {
   deleteUser,
   searchuser,
   isAdmin,
+  invaidCsrfToken,
 };
