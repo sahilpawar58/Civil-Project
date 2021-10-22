@@ -60,6 +60,15 @@ module.exports.signup_post = async (req, res) => {
   password = String(password);
   firstname = String(firstname);
   lastname = String(lastname);
+  additionalinfo = {
+    fullname: "",
+    address: "",
+    city: "",
+    district: "",
+    propertytype: null,
+    adharcard: null,
+    pancard: null,
+  };
   // let finalres = mongoose.sanitizeFilter(
   //   JSON.stringify({ firstname, lastname, email, password })
   // );
@@ -72,6 +81,7 @@ module.exports.signup_post = async (req, res) => {
       email,
       password,
       role,
+      additionalinfo,
     });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -92,6 +102,7 @@ module.exports.login_post = async (req, res) => {
     const user = await User.login(email, String(password));
     if (user.role != "admin") {
       const token = createToken(user._id);
+      //res.redirect("additional-user-info");
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.status(200).json({ user: user._id });
     } else {
@@ -142,6 +153,15 @@ module.exports.vendorsignup_post = async (req, res) => {
   password = String(password);
   firstname = String(firstname);
   lastname = String(lastname);
+  additionalinfo = {
+    fullname: "",
+    address: "",
+    city: "",
+    district: "",
+    propertytype: null,
+    adharcard: null,
+    pancard: null,
+  };
   try {
     role = "vendor";
     const user = await User.create({
@@ -150,6 +170,7 @@ module.exports.vendorsignup_post = async (req, res) => {
       email,
       password,
       role,
+      additionalinfo,
     });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -207,5 +228,69 @@ module.exports.adminlogin_post = async (req, res) => {
   } else {
     const errors = handleErrors(Error("Incorrect secret"));
     res.status(403).json({ errors });
+  }
+};
+
+module.exports.additionalinfo = (req, res) => {
+  //console.log(req);
+  let { fullname, address, city, district, propertytype, adharcard, pancard } =
+    req.body;
+  const token = req.cookies.jwt;
+  let newpropertytype = "";
+  fullname = String(fullname);
+  address = String(address);
+  city = String(city);
+  district = String(district);
+  propertytype = Number(propertytype);
+  adharcard = Number(adharcard);
+  pancard = Number(pancard);
+  //chossing property type
+  switch (propertytype) {
+    case 1:
+      propertytype = "Residential";
+      break;
+    case 2:
+      propertytype = "Commercial";
+      break;
+    case 3:
+      propertytype = "Single Home";
+      break;
+  }
+  additionalinfo = {
+    fullname,
+    address,
+    city,
+    district,
+    propertytype,
+    adharcard,
+    pancard,
+  };
+
+  if (token) {
+    jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+      if (err) {
+        console.log(err.message);
+        res.locals.user = null;
+        next();
+      } else {
+        console.log(decodedtoken);
+        let user = await User.findById(decodedtoken.id);
+        const result = await User.updateOne(
+          { email: user.email },
+          {
+            $set: {
+              additionalinfo,
+            },
+          }
+        );
+        console.log(result);
+        res.locals.user = user;
+        res.render("home");
+        //next();
+      }
+    });
+  } else {
+    res.locals.user = null;
+    next();
   }
 };
