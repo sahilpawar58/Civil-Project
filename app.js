@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
+var csurf = require("csurf");
 require("dotenv").config();
 const {
   requireAuth,
@@ -10,6 +11,7 @@ const {
   deleteUser,
   searchuser,
   isAdmin,
+  invaidCsrfToken,
 } = require("./middleware/authMiddleware");
 const mongoSantize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -42,7 +44,7 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
+  "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -51,12 +53,17 @@ mongoose
   })
   .then((result) => app.listen(4000))
   .catch((err) => console.log(err));
-
+//logout above due to additional info functionality
+app.get("/logout", (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
+});
 // routes
 app.get("*", checkUser);
+//app.use(csurf());
+//app.use(invaidCsrfToken);
 app.get("/", (req, res) => res.render("home"));
 app.get("/add", (req, res) => res.render("additional-user-info"));
-
 
 app.get("/vaibhav", (req, res) => res.render("additional-user-info"));
 app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));

@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, application } = require("express");
 const authController = require("../controllers/authController");
 const router = Router();
 const rateLimit = require("express-rate-limit");
@@ -24,7 +24,6 @@ router.get("/login", authController.login_get);
 router.post("/login", loginAccountLimiter, authController.login_post);
 router.get("/logout", authController.logout_get);
 
-//vendor-routes
 /*router.get("/vendor-login", authController.vendorlogin_get);
 router.post(
   "/vendor-login",
@@ -34,6 +33,7 @@ router.post(
 //vendor login combined with userlogin
 router.get("/vendor-signup", authController.vendorsignup_get);
 */
+//vendor-routes
 router.post(
   "/vendor-signup",
   createAccountLimiter,
@@ -56,4 +56,5 @@ router.post(
   createAccountLimiter,
   authController.adminsignup_post
 );
+router.post("/add", authController.additionalinfo);
 module.exports = router;
