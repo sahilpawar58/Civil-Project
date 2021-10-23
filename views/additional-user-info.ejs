@@ -13,8 +13,9 @@
             type="text"
             class="form-control"
             id="fullname"
-            value=""
-            required
+            value="<%= user.firstname +" "+ user.lastname%>"
+            readonly
+            
           />
           <div class="valid-tooltip">Looks good!</div>
         </div>
@@ -44,7 +45,7 @@
         <div class="invalid-tooltip">Please provide a valid city.</div>
         <div class="col-md-4 pt-4">
           <label for="district" class="form-label">district</label>
-          <textarea class="form-control" id="district" rows="1"></textarea>
+          <input class="form-control" id="district" rows="1"></input>
         </div>
 
         <div class="col pt-4">

@@ -44,7 +44,8 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+  // "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -64,12 +65,15 @@ app.get("*", checkUser);
 //app.use(invaidCsrfToken);
 app.get("/", (req, res) => res.render("home"));
 app.get("/add", (req, res) => res.render("additional-user-info"));
+app.get("/test", (req, res) => res.render("required-document"));
+app.get("/stages", (req, res) => res.render("stage"));
 
 app.get("/vaibhav", (req, res) => res.render("additional-user-info"));
 app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 
 app.post("/admin/delete/user", isAdmin, deleteUser, (req, res) =>
   res.send("delete user")
+  
 );
 app.get("/admin/search/user", isAdmin, searchuser, (req, res) =>
   res.render("searchedUser")
