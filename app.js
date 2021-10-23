@@ -44,7 +44,8 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+  // "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,

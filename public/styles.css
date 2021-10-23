@@ -1,5 +1,5 @@
 /* google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"); */
 /*
 body {
   margin: 20px 40px;
@@ -265,8 +265,8 @@ label .notification .selected:before {
 }
 
 .mainheader {
-  margin: 20px 40px;
-  font-size: 1.2rem;
+  margin: 0px 0px;
+  font-size: 1.5rem;
   letter-spacing: 1px;
   background: #fafafa;
 }
@@ -291,9 +291,9 @@ footer {
 /*
 .mainheader .btn {
   margin-top: 20px;
-  padding: 12px 18px;
   text-transform: uppercase;
   font-weight: bold;
+  padding: 12px 18px;
   display: inline-block;
   font-size: 0.8em;
 }*/
@@ -336,7 +336,9 @@ footer .container {
   flex-wrap: wrap;
   flex-direction: row;
 }
-
+font-weight-bol{
+  font-weight:bold;
+}
 footer .container .sec {
   margin-right: 30px;
 }
