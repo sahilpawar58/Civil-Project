@@ -65,6 +65,7 @@ app.get("*", checkUser);
 //app.use(invaidCsrfToken);
 app.get("/", (req, res) => res.render("home"));
 app.get("/add", (req, res) => res.render("additional-user-info"));
+app.get("/test", (req, res) => res.render("required-document"));
 
 app.get("/vaibhav", (req, res) => res.render("additional-user-info"));
 app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
