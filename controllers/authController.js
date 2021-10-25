@@ -232,7 +232,6 @@ module.exports.adminlogin_post = async (req, res) => {
 };
 
 module.exports.additionalinfo = (req, res) => {
-  //console.log(req);
   let { fullname, address, city, district, propertytype, adharcard, pancard } =
     req.body;
   const token = req.cookies.jwt;

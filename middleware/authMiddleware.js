@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 require("dotenv").config();
 const jwt_secret = process.env.JWT_SECRET;
+var csrf = require("csurf");
+var csrfProtection = csrf({ cookie: true });
+
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
   //check json web token exists
@@ -21,6 +24,7 @@ const requireAuth = (req, res, next) => {
 };
 
 const checkUser = (req, res, next) => {
+  //console.log(res.csrfToken());
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
@@ -78,6 +82,10 @@ const isAdmin = (req, res, next) => {
   }
 };
 
+const getCSRFToken = async (req, res, next) => {
+  // console.log({ csrfToken: req.csrfToken() });
+};
+
 const displayallusers = async (req, res, next) => {
   //console.log(decodedtoken);
   let user = await User.find();
@@ -115,4 +123,5 @@ module.exports = {
   searchuser,
   isAdmin,
   invaidCsrfToken,
+  getCSRFToken,
 };

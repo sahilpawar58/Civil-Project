@@ -76,7 +76,7 @@
           <input type="text" class="form-control" id="pan1" />
         </div>
       </div>
-
+      <meta name="csrf-token" content="<%= csrfToken %>">
       <div class="col-md-12 m-3 justify-content-center">
         <button class="btn btn-outline-primary" type="submit">
           Submit form
@@ -87,6 +87,8 @@
 </div>
 
 <script>
+  
+  if (window.location.href === 'http://localhost:4000/') { window.location.href = 'http://localhost:4000/add' }
   const form = document.querySelector("form");
   const emailError = document.querySelector(".email.error");
   const passwordError = document.querySelector(".password.error");

@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
-var csurf = require("csurf");
+var csrf = require("csurf");
+var csrfProtection = csrf({ cookie: true });
 require("dotenv").config();
 const {
   requireAuth,
@@ -12,6 +13,7 @@ const {
   searchuser,
   isAdmin,
   invaidCsrfToken,
+  getCSRFToken,
 } = require("./middleware/authMiddleware");
 const mongoSantize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -44,8 +46,8 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  // "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
-  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
+  "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+//"@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -59,12 +61,27 @@ app.get("/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.redirect("/");
 });
+console.log("helllo");
+//getCSRFToken();
+console.log();
 // routes
-app.get("*", checkUser);
-//app.use(csurf());
+app.get("*", csrfProtection, checkUser);
+
 //app.use(invaidCsrfToken);
+app.get("/add", csrfProtection, (req, res) => {
+  console.log("zeeeeeeeee");
+  console.log(req.csrfToken());
+  res.render("additional-user-info", { csrfToken: req.csrfToken() });
+});
 app.get("/", (req, res) => res.render("home"));
-app.get("/add", (req, res) => res.render("additional-user-info"));
+app.get("/csrf", csrfProtection, (req, res, next) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+//app.use(csrfProtection);
+app.get("/getcsrf", csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
 app.get("/test", (req, res) => res.render("required-document"));
 app.get("/stages", (req, res) => res.render("stage"));
 
@@ -73,7 +90,6 @@ app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 
 app.post("/admin/delete/user", isAdmin, deleteUser, (req, res) =>
   res.send("delete user")
-  
 );
 app.get("/admin/search/user", isAdmin, searchuser, (req, res) =>
   res.render("searchedUser")
