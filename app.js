@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
 var csrf = require("csurf");
+var svgCaptcha = require("svg-captcha");
+var captcha = svgCaptcha.create();
+var svgCaptcha = require("svg-captcha");
 var csrfProtection = csrf({ cookie: true });
 require("dotenv").config();
 const {
@@ -57,6 +60,14 @@ mongoose
   .then((result) => app.listen(4000))
   .catch((err) => console.log(err));
 //logout above due to additional info functionality
+
+app.get("/captcha", function (req, res) {
+  var captcha = svgCaptcha.create();
+  req.cookie.captcha = captcha.text;
+
+  res.type("svg");
+  res.status(200).send(captcha.data);
+});
 app.get("/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.redirect("/");

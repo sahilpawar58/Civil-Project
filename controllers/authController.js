@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+var authMiddleware = require("../middleware/authMiddleware");
 require("dotenv").config();
 const jwt_secret = process.env.JWT_SECRET;
 const admin_secret = process.env.ADMIN_SECRET;
@@ -232,8 +233,16 @@ module.exports.adminlogin_post = async (req, res) => {
 };
 
 module.exports.additionalinfo = (req, res) => {
-  let { fullname, address, city, district, propertytype, adharcard, pancard } =
-    req.body;
+  let {
+    fullname,
+    address,
+    city,
+    district,
+    propertytype,
+    adharcard,
+    pancard,
+    usercaptcha,
+  } = req.body;
   const token = req.cookies.jwt;
   let newpropertytype = "";
   fullname = String(fullname);
@@ -243,6 +252,11 @@ module.exports.additionalinfo = (req, res) => {
   propertytype = Number(propertytype);
   adharcard = Number(adharcard);
   pancard = Number(pancard);
+  usercaptcha = String(usercaptcha);
+  var x = global.captcha.text;
+  console.log("real captcha is:" + x);
+  console.log("your captcha is:" + usercaptcha);
+  console.log(global.captcha.text);
   //chossing property type
   switch (propertytype) {
     case 1:
@@ -263,33 +277,39 @@ module.exports.additionalinfo = (req, res) => {
     propertytype,
     adharcard,
     pancard,
+    usercaptcha,
   };
-
-  if (token) {
-    jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
-      if (err) {
-        console.log(err.message);
-        res.locals.user = null;
-        next();
-      } else {
-        console.log(decodedtoken);
-        let user = await User.findById(decodedtoken.id);
-        const result = await User.updateOne(
-          { email: user.email },
-          {
-            $set: {
-              additionalinfo,
-            },
-          }
-        );
-        console.log(result);
-        res.locals.user = user;
-        res.render("home");
-        //next();
-      }
-    });
+  if (global.captcha.text == usercaptcha) {
+    console.log("valid captcha");
+    if (token) {
+      jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+        if (err) {
+          console.log(err.message);
+          res.locals.user = null;
+          next();
+        } else {
+          console.log(decodedtoken);
+          let user = await User.findById(decodedtoken.id);
+          const result = await User.updateOne(
+            { email: user.email },
+            {
+              $set: {
+                additionalinfo,
+              },
+            }
+          );
+          console.log(result);
+          res.locals.user = user;
+          res.render("home");
+          //next();
+        }
+      });
+    } else {
+      res.locals.user = null;
+      next();
+    }
   } else {
-    res.locals.user = null;
-    next();
+    console.log("invalid captcha");
+    res.render("required-document");
   }
 };

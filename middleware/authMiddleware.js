@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 require("dotenv").config();
 const jwt_secret = process.env.JWT_SECRET;
+var svgCaptcha = require("svg-captcha");
+global.captcha = "";
 var csrf = require("csurf");
 var csrfProtection = csrf({ cookie: true });
 
@@ -45,7 +47,15 @@ const checkUser = (req, res, next) => {
           (user.additionalinfo.adharcard == "") |
           (user.additionalinfo.pancard == "")
         ) {
-          return res.render("additional-user-info");
+          global.captcha = svgCaptcha.create();
+          console.log(global.captcha.text);
+          x = global.captcha.data;
+          // module.exports(global.captcha);
+          //res.locals.captchatext = captcha.text;
+          // req.session.captcha = captcha.text;
+          // res.type("svg");
+          // res.status(200).send(captcha.data);
+          return res.render("additional-user-info", { x });
         }
         next();
       }
@@ -124,4 +134,5 @@ module.exports = {
   isAdmin,
   invaidCsrfToken,
   getCSRFToken,
+  captcha: global.captcha,
 };
