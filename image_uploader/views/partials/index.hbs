@@ -1,0 +1,66 @@
+	<script>
+		var images = [];
+   	  function image_select() {
+   	  	  var image = document.getElementById('image').files;
+   	  	  for (i = 0; i < image.length; i++) {
+   	  	  	  if (check_duplicate(image[i].name)) {
+                images.push({
+   	  	  	  	    "name" : image[i].name,
+   	  	  	  	    "url" : URL.createObjectURL(image[i]),
+   	  	  	  	    "file" : image[i],
+   	  	  	    })
+   	  	  	  } else 
+   	  	  	  {
+   	  	  	  	 alert(image[i].name + " is already added to the list");
+   	  	  	  }
+   	  	  }
+   	  	  document.getElementById('form').reset();
+   	  	  document.getElementById('container').innerHTML = image_show();
+   	  }
+
+   	  function image_show() {
+   	  	  var image = "";
+   	  	  images.forEach((i) => {
+   	  	  	 image += `<div class="image_container d-flex justify-content-center position-relative">
+   	  	  	  	  <img src="`+ i.url +`" alt="Image">
+   	  	  	  	  <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
+   	  	  	  </div>`;
+   	  	  })
+   	  	  return image;
+   	  }
+   	  function delete_image(e) {
+   	  	  images.splice(e, 1);
+   	  	  document.getElementById('container').innerHTML = image_show();
+   	  }
+
+   	  function check_duplicate(name) {
+   	  	var image = true;
+   	  	if (images.length > 0) {
+   	  		for (e = 0; e < images.length; e++) {
+   	  			if (images[e].name == name) {
+   	  				image = false;
+   	  				break;
+   	  			}
+   	  		}
+   	  	}
+   	  	return image;
+   	  }
+
+	</script>
+    <div class="container mt-3 w-100">
+   	    <div class="card shadow-sm w-100">
+   	  	    <div class="card-header d-flex justify-content-between">
+   	  	    	<h4>Image Uploading</h4>
+					 <form action="/uploademultiple" enctype="multipart/form-data" method="post">
+   	  	    	  	<input type="file" name="Image" id="image" multiple="" class="d-none" onchange="image_select()">
+   	  	    	  	<button class="btn btn-sm btn-primary" type="button" onclick="document.getElementById('image').click()">Choose Images</button>
+					<button type="submit" class="btn btn-sm btn-primary" value="">I am here to submit the sheet</button>	
+				</form>
+   	  	    </div>
+   	  	    <div class="card-body d-flex flex-wrap justify-content-start" id="container">
+   	  	    	  <!-- image preview -->
+   	  	    </div>
+				 
+   	    </div>
+    </div>
+
