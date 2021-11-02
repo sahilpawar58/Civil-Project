@@ -1,0 +1,15 @@
+use('real-auth')
+
+db.users.find({})
+
+db.users.updateOne({email:"skrillex69l69@gmail.com"},{$push:{
+     images: {
+    filename: 'aboddffddut me',
+    contentType: 'image/png',
+    imageBase64: 'iVBdfSUhEUgAAC',
+  }
+}
+ 
+})
+
+db.users.find({})

@@ -52,6 +52,54 @@ const checkUser = (req, res, next) => {
   }
 };
 
+// async function getUserInfo(req,res){
+//   const token = req.cookies.jwt;
+//   let user="ddd";
+//   if (token) {
+//     user = await new Promise((resolve,reject) => jwt.verify(token, jwt_secret,async (err, decodedtoken) => {
+//       if (err) {
+//         console.log(err.message);
+//         user = null;
+//         resolve(user)
+//       } else {
+//         console.log("cool",decodedtoken);
+//         resolve( await User.findById(decodedtoken.id)); 
+//       }
+//     }));
+  
+// }
+// }
+
+const getUserInfo = async (req, res)=>{
+  const token = req.cookies.jwt;
+  if (!req.cookies.jwt) return false;
+  return await new Promise((resolve,reject) => jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+    resolve( !err ? await User.findById(decodedtoken.id) : null);
+  }));
+};
+
+const getInfo = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+      if (err) {
+        console.log(err.message);
+        res.locals.user = null;
+       
+      } else {
+        console.log(decodedtoken);
+        let user = await User.findById(decodedtoken.id);
+        res.locals.user = user;
+      
+      }
+    });
+  } else {
+    res.locals.user = null;
+   
+  }
+};
+
+
 const isAdmin = (req, res, next) => {
   const token = req.cookies.jwt;
   //check json web token exists
@@ -115,4 +163,5 @@ module.exports = {
   searchuser,
   isAdmin,
   invaidCsrfToken,
+  getUserInfo
 };

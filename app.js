@@ -44,8 +44,8 @@ const dbURI =
   mongoUsername +
   ":" +
   mongoPassword +
-  // "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
-  "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
+   "@nodepractice.l9viu.mongodb.net/real-auth?retryWrites=true&w=majority";
+ // "@cluster0.4wmbc.mongodb.net/real_auth?retryWrites=true&w=majority";
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -65,6 +65,19 @@ app.get("*", checkUser);
 //app.use(invaidCsrfToken);
 app.get("/", (req, res) => res.render("home"));
 app.get("/add", (req, res) => res.render("additional-user-info"));
+app.use('/uploads', require('./routes/router'));
+app.use(function(err,req,res,next){
+  //console.log(err)
+  if(err.message === "wrong file type"){
+      res.status(500).send("<h1>PLZ wait REdirecting......</h1><script>alert('this file type is not allowed');location.href='/'</script>")
+  }
+  if(err.message === 'limit exceeded'){
+      res.status(500).send("<h1>PLZ wait REdirecting......</h1><script>alert('your file is too large');location.href='/'</script>")
+  }
+  if(err.message === 'image upload limit reached'){
+    res.status(500).send("<h1>PLZ wait REdirecting......</h1><script>alert('u can upload inly 10 files');location.href='/uploads'</script>")
+}
+})
 app.get("/test", (req, res) => res.render("required-document"));
 app.get("/stages", (req, res) => res.render("stage"));
 
