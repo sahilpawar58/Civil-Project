@@ -32,6 +32,7 @@ const checkUser = (req, res, next) => {
         console.log(decodedtoken);
         let user = await User.findById(decodedtoken.id);
         res.locals.user = user;
+        try{
         if (
           (user.additionalinfo.fullname == "") |
           (user.additionalinfo.address == "") |
@@ -43,6 +44,15 @@ const checkUser = (req, res, next) => {
         ) {
           return res.render("additional-user-info");
         }
+      }
+      catch(exception){}
+      console.log("images are",user.images.length)
+      try{
+        if(user.images.length === 0){
+          return res.render('photoUpload', { user : user.images });
+        }
+      }
+      catch(ex){}
         next();
       }
     });
@@ -51,6 +61,54 @@ const checkUser = (req, res, next) => {
     next();
   }
 };
+
+// async function getUserInfo(req,res){
+//   const token = req.cookies.jwt;
+//   let user="ddd";
+//   if (token) {
+//     user = await new Promise((resolve,reject) => jwt.verify(token, jwt_secret,async (err, decodedtoken) => {
+//       if (err) {
+//         console.log(err.message);
+//         user = null;
+//         resolve(user)
+//       } else {
+//         console.log("cool",decodedtoken);
+//         resolve( await User.findById(decodedtoken.id)); 
+//       }
+//     }));
+  
+// }
+// }
+
+const getUserInfo = async (req, res)=>{
+  const token = req.cookies.jwt;
+  if (!req.cookies.jwt) return false;
+  return await new Promise((resolve,reject) => jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+    resolve( !err ? await User.findById(decodedtoken.id) : null);
+  }));
+};
+
+const getInfo = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, jwt_secret, async (err, decodedtoken) => {
+      if (err) {
+        console.log(err.message);
+        res.locals.user = null;
+       
+      } else {
+        console.log(decodedtoken);
+        let user = await User.findById(decodedtoken.id);
+        res.locals.user = user;
+      
+      }
+    });
+  } else {
+    res.locals.user = null;
+   
+  }
+};
+
 
 const isAdmin = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -115,4 +173,5 @@ module.exports = {
   searchuser,
   isAdmin,
   invaidCsrfToken,
+  getUserInfo
 };

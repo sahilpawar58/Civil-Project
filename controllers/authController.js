@@ -69,6 +69,7 @@ module.exports.signup_post = async (req, res) => {
     adharcard: null,
     pancard: null,
   };
+  
   // let finalres = mongoose.sanitizeFilter(
   //   JSON.stringify({ firstname, lastname, email, password })
   // );
@@ -82,6 +83,7 @@ module.exports.signup_post = async (req, res) => {
       password,
       role,
       additionalinfo,
+      
     });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });

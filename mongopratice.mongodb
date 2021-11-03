@@ -1,0 +1,3 @@
+use('real-auth')
+
+db.users.find({})

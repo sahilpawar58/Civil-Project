@@ -6,17 +6,38 @@
     <div class="col-6">
         <div class="pl-5 pt-5 bg-light">
             <h3 class="text-danger font-weight-bold">Required Documents </h3>
+            <br> <% if(user){ %>
+            <h5><%= user.additionalinfo.fullname%></h5>
             <br>
-            <h5>Rudraksha CHS</h5>
-            <br>
-            <h5>Blcok no 23 aksjdfasldfjadsklfj 
-                aasjkdflj fskl near kedarnath thing, Maharashtra,400068 </h5>
+            <h5><%= user.additionalinfo.address%></h5>
             <br>
             <h5>Contact : +918805078063</h5>
             <br>
             <h5>Status : Applied</h5>
-            <br>
+            <br><% } %>
         </div>
+        <section class="mt-5">
+            <div class="row">
+             
+               <%if(user.images){ user.images.forEach(function(image){ %>
+            
+              <div class="col-3">
+                <div class="card shadow" style="width: 18rem">
+                  <img
+                    src="data:<%= image.contentType %>;base64, <%= image.imageBase64 %>"
+                    class="card-img-top"
+                    name="<%= image.filename %>"
+                    class="img-fluid"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                         </div>
+                </div>
+              </div>
+             
+               <% }); }%>
+            </div>
+          </section>
         <h3 class="pl-5  pt-5 text-danger">First Document Required</h3>
     </div>
     <div class="col">
