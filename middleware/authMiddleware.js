@@ -32,6 +32,7 @@ const checkUser = (req, res, next) => {
         console.log(decodedtoken);
         let user = await User.findById(decodedtoken.id);
         res.locals.user = user;
+        try{
         if (
           (user.additionalinfo.fullname == "") |
           (user.additionalinfo.address == "") |
@@ -43,6 +44,15 @@ const checkUser = (req, res, next) => {
         ) {
           return res.render("additional-user-info");
         }
+      }
+      catch(exception){}
+      console.log("images are",user.images.length)
+      try{
+        if(user.images.length === 0){
+          return res.render('indextest', { user : user.images });
+        }
+      }
+      catch(ex){}
         next();
       }
     });

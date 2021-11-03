@@ -55,10 +55,11 @@ const userSchema = mongoose.Schema({
       type: String,
     },
   },
-  images:{
-    type:[Object],
-    unique:false
-  }
+  images: [{
+    filename : String,
+    contentType : String,
+    imageBase64: String
+     }]
 });
 // fire a function before doc saved to db
 userSchema.pre("save", async function (next) {

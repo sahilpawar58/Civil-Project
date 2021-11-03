@@ -65,7 +65,7 @@ app.get("*", checkUser);
 //app.use(invaidCsrfToken);
 app.get("/", (req, res) => res.render("home"));
 app.get("/add", (req, res) => res.render("additional-user-info"));
-app.use('/uploads', require('./routes/router'));
+app.use('/uploads', require('./routes/uploadRouter'));
 app.use(function(err,req,res,next){
   //console.log(err)
   if(err.message === "wrong file type"){

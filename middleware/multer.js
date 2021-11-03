@@ -7,13 +7,21 @@ var storage = multer.diskStorage({
     },
     filename : function (req, file , cb){
         // image.jpg
-        console.log(file.size)
-        var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
-        console.log("ssssss"+file.size)
+        
+        //var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
+        var ext;
+        if(file.mimetype === 'image/jpeg'){
+            ext=".jpeg"
+        }
+        if(file.mimetype === 'image/png'){
+            ext=".png"
+        }
+        
         cb(null, file.fieldname + '-' + Date.now() + ext)
     },
     limits: {
-      fileSize: 1000, // 5MB
+      fieldSize: 1024 * 512,
+      fieldNameSize: 200
     },
     onError : function(err, next) {
         console.log('error', err);
