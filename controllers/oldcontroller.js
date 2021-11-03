@@ -18,7 +18,7 @@ exports.home = async (req, res) => {
 //    }
     
 //    })     
-    res.render('indextest', { images : all_images });
+    res.render('photoUpload', { images : all_images });
 }
 
 exports.uploads = (req, res , next) => {

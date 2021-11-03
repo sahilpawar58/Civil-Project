@@ -78,7 +78,9 @@ app.use(function(err,req,res,next){
     res.status(500).send("<h1>PLZ wait REdirecting......</h1><script>alert('u can upload inly 10 files');location.href='/uploads'</script>")
 }
 })
-app.get("/test", (req, res) => res.render("required-document"));
+
+//user-home
+app.use("/home",  require('./routes/homeRoutes'));
 app.get("/stages", (req, res) => res.render("stage"));
 
 app.get("/vaibhav", (req, res) => res.render("additional-user-info"));

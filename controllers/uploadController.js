@@ -3,12 +3,13 @@ const fs = require('fs');
 const {getUserInfo} = require('../middleware/authMiddleware')
 var crypto = require("crypto");
 
+
 exports.home = async (req, res) => {
     
     const user = await getUserInfo(req,res)
     
     const all_images = await UploadModel.findById(user.id)
-    res.render('indextest', { user : all_images });
+    res.render('photoUpload', { user : all_images });
 }
 
 exports.uploads = async (req, res , next) => {
@@ -79,6 +80,13 @@ exports.uploads = async (req, res , next) => {
         .catch(err =>{
             res.json(err);
         })
+}
+
+exports.reencodefiles =async(req,res,next) =>{
+    const files = req.files;
+    
+    console.log(files)
+
 }
 
 exports.delete =async(req,res) =>{

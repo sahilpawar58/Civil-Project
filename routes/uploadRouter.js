@@ -10,7 +10,7 @@ const use =fn => (req,res,next)=>{
 
 route.get('/', controller.home);
 route.post('/delete',controller.delete)
-route.post('/uploadmultiple',use(store.array('images', 12)),use(controller.uploads))
+route.post('/uploadmultiple',use(store.array('images', 12)),controller.reencodefiles,use(controller.uploads))
 
 
 

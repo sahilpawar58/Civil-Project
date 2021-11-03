@@ -8,7 +8,6 @@ var storage = multer.diskStorage({
     filename : function (req, file , cb){
         // image.jpg
         
-        //var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
         var ext;
         if(file.mimetype === 'image/jpeg'){
             ext=".jpeg"

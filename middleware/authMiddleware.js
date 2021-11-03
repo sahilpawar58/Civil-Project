@@ -49,7 +49,7 @@ const checkUser = (req, res, next) => {
       console.log("images are",user.images.length)
       try{
         if(user.images.length === 0){
-          return res.render('indextest', { user : user.images });
+          return res.render('photoUpload', { user : user.images });
         }
       }
       catch(ex){}
